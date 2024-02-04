@@ -164,8 +164,8 @@ const init = async () => {
       {
         plugin: exportsPlaylist,
         options: {
-          producerService,
-          playlistsService,
+          producerService: producerService,
+          playlistService: playlistsService,
           validator: ExportValidator,
         },
       }

@@ -1,5 +1,5 @@
-const routes = require('./routes');
 const UploadsHandler = require('./handler');
+const routes = require('./routes');
 
 module.exports = {
     name: 'uploads',
@@ -8,4 +8,4 @@ module.exports = {
         const uploadsHandler = new UploadsHandler(service, validator);
         server.route(routes(uploadsHandler));
     },
-}
+};

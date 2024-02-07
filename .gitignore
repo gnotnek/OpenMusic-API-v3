@@ -132,3 +132,4 @@ dist
 *.zip
 
 src/api/uploads/file
+openmusic_consumer/

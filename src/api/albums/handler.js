@@ -32,7 +32,9 @@ class AlbumsHandler {
         const songs = await this._songsService.getSongsByAlbumId(id);
 
         const data = {
-            ...album,
+            id: album.id,
+            name: album.name,
+            year: album.year,
             songs: songs.map((song) => ({
                 id: song.id,
                 title: song.title,

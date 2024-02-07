@@ -2,7 +2,7 @@ const { nanoid } = require('nanoid');
 const { Pool } = require('pg');
 const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
-
+const fs = require('fs');
 
 class AlbumsService {
     constructor() {
@@ -64,6 +64,33 @@ class AlbumsService {
 
         if (!result.rows.length) {
             throw new NotFoundError('Album gagal dihapus. Id tidak ditemukan');
+        }
+    }
+
+    async addCoverByAlbumId(id, coverUrl) {
+        const query = {
+            text: 'UPDATE albums SET cover = $2 WHERE id = $1 RETURNING id, cover',
+            values: [id, coverUrl],
+        };
+
+        const result = await this._pool.query(query);
+        
+        if (!result.rows.length) {
+            throw new InvariantError('Cover gagal ditambahkan');
+        }
+    }
+
+    async getCoversByAlbumId(id) {
+        const coverDir = 'src/api/uploads/file/images'
+        const coverFiles = await fs.promises.readdir(coverDir);
+
+        const coverFileName = coverFiles.find(fileName => fileName.includes(id));
+
+        if (!coverFileName) {
+            return null;
+        } else {
+            const coverUrl = `http://${process.env.HOST}:${process.env.PORT}/upload/images/${coverFileName}`;
+            return coverUrl; 
         }
     }
 }

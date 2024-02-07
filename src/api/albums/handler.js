@@ -31,8 +31,6 @@ class AlbumsHandler {
         const album = await this._albumsService.getAlbumById(id);
         const songs = await this._songsService.getSongsByAlbumId(id);
 
-        const coverUrl = null;
-
         const data = {
             ...album,
             songs: songs.map((song) => ({
@@ -40,7 +38,7 @@ class AlbumsHandler {
                 title: song.title,
                 performer: song.performer,
             })),
-            coverUrl: coverUrl,
+            coverUrl: album.cover,
         };
 
         return {
@@ -51,7 +49,7 @@ class AlbumsHandler {
         };
     }
 
-    async putAlbumByIdHandler(request, h) {
+    async putAlbumByIdHandler(request) {
         this._validator.validateAlbumPayload(request.payload);
         const { id } = request.params;
 

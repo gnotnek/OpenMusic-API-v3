@@ -79,20 +79,6 @@ class AlbumsService {
             throw new InvariantError('Cover gagal ditambahkan');
         }
     }
-
-    async getCoversByAlbumId(id) {
-        const coverDir = 'src/api/uploads/file/images'
-        const coverFiles = await fs.promises.readdir(coverDir);
-
-        const coverFileName = coverFiles.find(fileName => fileName.includes(id));
-
-        if (!coverFileName) {
-            return null;
-        } else {
-            const coverUrl = `http://${process.env.HOST}:${process.env.PORT}/upload/images/${coverFileName}`;
-            return coverUrl; 
-        }
-    }
 }
 
 module.exports = AlbumsService;

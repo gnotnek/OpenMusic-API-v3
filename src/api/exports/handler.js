@@ -22,7 +22,7 @@ class ExportsHandler {
             targetEmail: request.payload.targetEmail,
         };
         
-        await this._producerService.sendMessage('export:playlists', JSON.stringify(message));
+        await this._producerService.sendMessage('export:playlist', JSON.stringify(message));
 
         const response = h.response({
             status: 'success',

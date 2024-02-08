@@ -28,21 +28,18 @@ class SongsService {
         return result.rows[0].id;
     }
 
-    async getSongs(title, performer) {
-        let condition = '';
-        if(title && performer) {
-            condition = `WHERE title ILIKE '%${title}%' AND performer ILIKE '${performer}%'`;
-        } else if(title) {
-            condition = `WHERE title ILIKE '${title}%'`;
-        } else if(performer) {
-            condition = `WHERE performer ILIKE '${performer}%'`;
-        }
-
+    async getSongs(title = '', performer = '') {
         const query = {
-            text: `SELECT id, title, performer FROM songs ${condition}`,
+            text: 'SELECT id, title, performer FROM songs WHERE title LIKE $1 AND performer LIKE $2',
+            values: [`%${title}%`, `%${performer}%`],
         };
 
         const result = await this._pool.query(query);
+
+        if(!result.rows.length) {
+            throw new NotFoundError('Lagu tidak ditemukan');
+        }
+
         return result.rows;
     }
 
